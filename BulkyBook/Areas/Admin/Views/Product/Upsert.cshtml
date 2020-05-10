@@ -9,11 +9,11 @@
 <form method="post" enctype="multipart/form-data">
     <div class="row p-3 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.Product.Id!=0)
+        @if (Model.Product.Id != 0)
         {
             //edit
             title = "Edit Product";
-            <input type="hidden" asp-for="Product.Id"/>
+            <input type="hidden" asp-for="Product.Id" />
         }
         <div class="col-12 border-bottom">
             <h2 class="text-primary ">
@@ -144,5 +144,5 @@
 </form>
 
 @section Scripts {
-<partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }
