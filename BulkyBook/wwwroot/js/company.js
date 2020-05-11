@@ -11,13 +11,14 @@ function loadDataTable() {
         },
         "columns": [
             { "data": "name", "width": "15%" },
-            { "data": "streetAdress", "width": "15%" },
+            { "data": "streetAddress", "width": "15%" },
             { "data": "city", "width": "10%" },
             { "data": "state", "width": "10%" },
             { "data": "phoneNumber", "width": "15%" },
             {
-                "data": "isAUthorizedCompany",
+                "data": "isAuthorizedCompany",
                 "render": function (data) {
+                    console.log(data)
                     if (data) {
                         return `<input type="checkbox" checked disabled />`
                     } else {
