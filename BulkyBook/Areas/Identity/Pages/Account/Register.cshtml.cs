@@ -96,7 +96,7 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }),
-                RoleList =  _roleManager.Roles.Where(u=>u.Name!=SD.Role_User_Indi).Select(x=>x.Name).Select(i => new SelectListItem
+                RoleList = _roleManager.Roles.Where(u => u.Name != SD.Role_User_Indi).Select(x => x.Name).Select(i => new SelectListItem
                 {
                     Text = i,
                     Value = i
@@ -150,6 +150,22 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_User_Comp));
                     }
 
+                    if (user.Role == null)
+                    {
+                        await _userManager.AddToRoleAsync(user, SD.Role_User_Indi);
+                    }
+                    else
+                    {
+                        if (user.CompanyId > 0)
+                        {
+                            await _userManager.AddToRoleAsync(user, SD.Role_User_Comp);
+                        }
+                        else
+                        {
+                            await _userManager.AddToRoleAsync(user, user.Role);
+                        }
+                    }
+
                     await _userManager.AddToRoleAsync(user, SD.Role_Admin);
 
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -169,8 +185,16 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        if (user.Role==null)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+
+                        } else
+                        {
+                            // admin is registering a new user
+                            return RedirectToAction("Index", "User", new { Area = "Admin" });
+                        }
                     }
                 }
                 foreach (var error in result.Errors)
