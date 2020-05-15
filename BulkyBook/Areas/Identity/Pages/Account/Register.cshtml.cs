@@ -166,8 +166,6 @@ namespace BulkyBook.Areas.Identity.Pages.Account
                         }
                     }
 
-                    await _userManager.AddToRoleAsync(user, SD.Role_Admin);
-
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     //var callbackUrl = Url.Page(
