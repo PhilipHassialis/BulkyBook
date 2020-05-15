@@ -26,7 +26,7 @@ function loadDataTable() {
                         // user is locked
                         return `
                             <div class="text-center">
-                                <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer">
+                                <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
                                     <i class="fas fa-lock-open"></i> Unlock
                                 </a>
                             </div>
@@ -34,7 +34,7 @@ function loadDataTable() {
                     } else {
                         return `
                             <div class="text-center">
-                                <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer">
+                                <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
                                     <i class="fas fa-lock"></i> Lock
                                 </a>
                             </div>
@@ -47,18 +47,13 @@ function loadDataTable() {
     });
 }
 
-function Delete(url) {
-    swal({
-        title: "Are you sure you want to delete",
-        text: "This is irrevocable",
-        icon: "warning",
-        buttons: true,
-        dangerMode:true
-    }).then(willDelete => {
-        if (willDelete) {
+function LockUnlock(id) {
+
             $.ajax({
-                type: "DELETE",
-                url: url,
+                type: "POST",
+                url: '/Admin/User/LockUnlock',
+                data: JSON.stringify(id),
+                contentType:'application/json',
                 success: function (data) {
                     if (data.success) {
                         toastr.success(data.message);
@@ -68,6 +63,5 @@ function Delete(url) {
                     }
                 }
             })
-        }
-    })
+   
 }
