@@ -51,6 +51,12 @@ namespace BulkyBook
                 options.AppId = "268104661050202";
                 options.AppSecret = "bccce0213de813ba62b69ff39a209512";
             });
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "764509609820-l3brduul066k6s701poaad1n2naf1k2p.apps.googleusercontent.com";
+                options.ClientSecret = "VLOrN_M4C2mZZMoxCW0jCgEj";
+
+            });
 
         }
 
