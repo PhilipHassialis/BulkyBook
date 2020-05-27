@@ -59,6 +59,12 @@ namespace BulkyBook
                 options.ClientSecret = "VLOrN_M4C2mZZMoxCW0jCgEj";
 
             });
+            services.AddSession(options=>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            })
 
         }
 
@@ -80,7 +86,7 @@ namespace BulkyBook
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 
