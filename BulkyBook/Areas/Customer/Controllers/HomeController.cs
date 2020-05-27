@@ -63,7 +63,14 @@ namespace BulkyBook.Areas.Customer.Controllers
                 if (cartFromDb==null)
                 {
                     // no records exist in db for this user
+                    _unitOfWork.ShoppingCart.Add(CartObject);
                 }
+                else
+                {
+                    cartFromDb.Count += CartObject.Count;
+                    _unitOfWork.ShoppingCart.Update(cartFromDb);
+                }
+                _unitOfWork.Save();
             }
             else
             {
@@ -76,6 +83,7 @@ namespace BulkyBook.Areas.Customer.Controllers
 
                 return View(cartObj);
             }
+            return RedirectToAction(nameof(Index));
            
         }
 
