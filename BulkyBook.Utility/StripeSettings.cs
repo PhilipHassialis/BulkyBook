@@ -6,7 +6,7 @@ namespace BulkyBook.Utility
 {
     public class StripeSettings
     {
-        string PublishableKey { get; set; }
-        string SecretKey { get; set; }
+        public string PublishableKey { get; set; }
+        public string SecretKey { get; set; }
     }
 }
