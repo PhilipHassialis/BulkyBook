@@ -2,6 +2,33 @@
 @{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var status = Context.Request.Query["status"];
+    var rejected = "text-prinmary";
+    var pending = "text-prinmary";
+    var all = "text-prinmary";
+    var inprocess = "text-prinmary";
+    var completed = "text-prinmary";
+
+    switch (status)
+    {
+        case "rejected":
+            rejected = "active text-white";
+            break;
+        case "pending":
+            pending = "active text-white";
+            break;
+        case "inprocess":
+            inprocess = "active text-white";
+            break;
+        case "completed":
+            completed = "active text-white";
+            break;
+        default:
+            all = "active text-white";
+            break;
+    }
+
 }
 
 <br />
@@ -14,31 +41,31 @@
             <ul class="list-group list-group-horizontal-sm">
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="inprocess">
-                    <li class="list-group-item">
+                    <li class="list-group-item @inprocess">
                         In Process
                     </li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="pending">
-                    <li class="list-group-item">
+                    <li class="list-group-item @pending">
                         Pending
                     </li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="completed">
-                    <li class="list-group-item">
+                    <li class="list-group-item @completed">
                         Completed
                     </li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="rejected">
-                    <li class="list-group-item">
+                    <li class="list-group-item @rejected">
                         Rejected
                     </li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="all">
-                    <li class="list-group-item">
+                    <li class="list-group-item @all">
                         All
                     </li>
                 </a>
