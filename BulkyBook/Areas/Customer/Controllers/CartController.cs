@@ -155,11 +155,11 @@ namespace BulkyBook.Areas.Customer.Controllers
                 list.Price = SD.GetPriceBasedOnQuantity(list.Count, list.Product.Price,
                                                         list.Product.Price50, list.Product.Price100);
                 ShoppingCartVM.OrderHeader.OrderTotal += (list.Price * list.Count);
-                
+
             }
             ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
-            ShoppingCartVM.OrderHeader.PhoneNumber= ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
-            ShoppingCartVM.OrderHeader.City= ShoppingCartVM.OrderHeader.ApplicationUser.City;
+            ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+            ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
             ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
             ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM.OrderHeader.ApplicationUser.PostalCode;
             ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM.OrderHeader.ApplicationUser.StreetAddress;
@@ -176,12 +176,12 @@ namespace BulkyBook.Areas.Customer.Controllers
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
             ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.
-                GetFirstOrDefault(c => c.Id == claim.Value, 
+                GetFirstOrDefault(c => c.Id == claim.Value,
                 includeProperties: "Company");
 
             ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.
                 GetAll(c => c.ApplicationUserId == claim.Value,
-                includeProperties:"Product");
+                includeProperties: "Product");
             ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
             ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
             ShoppingCartVM.OrderHeader.ApplicationUserId = claim.Value;
@@ -210,10 +210,15 @@ namespace BulkyBook.Areas.Customer.Controllers
             _unitOfWork.Save();
             HttpContext.Session.SetInt32(SD.ssShoppingCart, 0);
 
-            if (stripeToken==null)
+            if (stripeToken == null)
             {
+                // authorized company user - delayed payment - no stripe for now
+                ShoppingCartVM.OrderHeader.PaymentDate = DateTime.Now.AddDays(30);
+                ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
 
-            } else
+            }
+            else
             {
                 // process payment
                 var options = new ChargeCreateOptions()
@@ -228,7 +233,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                 var service = new ChargeService();
                 Charge charge = service.Create(options);
 
-                if (charge.BalanceTransactionId==null)
+                if (charge.BalanceTransactionId == null)
                 {
                     ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusRejected;
                 }
@@ -236,7 +241,7 @@ namespace BulkyBook.Areas.Customer.Controllers
                 {
                     ShoppingCartVM.OrderHeader.TransactionId = charge.BalanceTransactionId;
                 }
-                if (charge.Status.ToLower()=="succeeded")
+                if (charge.Status.ToLower() == "succeeded")
                 {
                     ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusApproved;
                     ShoppingCartVM.OrderHeader.OrderStatus = SD.PaymentStatusApproved;
