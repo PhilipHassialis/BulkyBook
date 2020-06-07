@@ -16,7 +16,7 @@ namespace BulkyBook.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public OrderController(UnitOfWork unitOfWork)
+        public OrderController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
