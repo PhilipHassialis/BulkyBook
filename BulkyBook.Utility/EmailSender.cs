@@ -23,13 +23,15 @@ namespace BulkyBook.Utility
             return Execute(emailOptions.SendGridKey, subject, htmlMessage, email);
         }
 
-        private Task Execute(string sendGrigKey, string subject, string message, string email)
+        private async Task Execute(string sendGrigKey, string subject, string message, string email)
         {
             var client = new SendGridClient(sendGrigKey);
             var from = new EmailAddress("admin@bulky.com", "Bulky Books");
             var to = new EmailAddress(email, "End User");
             var msg = MailHelper.CreateSingleEmail(from, to, subject, "",message);
-            return client.SendEmailAsync(msg);
+            var response = await client.SendEmailAsync(msg);
+            var resp = response;
+            //return response;
         }
     }
 }
