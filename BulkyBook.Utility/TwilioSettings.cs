@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BulkyBook.Utility
 {
-    public class TwillioSettings
+    public class TwilioSettings
     {
         public string PhoneNumber { get; set; }
         public string AuthToken { get; set; }
