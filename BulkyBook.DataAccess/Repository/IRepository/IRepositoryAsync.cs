@@ -9,7 +9,7 @@ namespace BulkyBook.DataAccess.Repository.IRepository
 {
     public interface IRepositoryAsync<T> where T:class
     {
-        Task<T> Get(int id);
+        Task<T> GetAsync(int id);
         Task<IEnumerable<T>> GetAllAsync(
             Expression<Func<T,bool>> filter=null,
             Func<IQueryable<T>,IOrderedQueryable<T>> orderBy=null,
